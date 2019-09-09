@@ -1,10 +1,13 @@
+node {
+   stage('Git Clone') { // for display purposes
+      // Get some code from a GitHub repository
+      git 'https://github.com/AjayNaiduJami/Java_Maven-App.git'
+    
+   }
+}
+
 pipeline {
-    agent {
-        docker {
-            image 'maven:3-alpine'
-            args '-v /root/.m2:/root/.m2'
-        }
-    }
+    agent any
     stages {
         stage('Build') {
             steps {
@@ -18,8 +21,12 @@ pipeline {
             post {
                 always {
                     junit 'target/surefire-reports/*.xml'
+                        emailext body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}",
+                  recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']],
+                  subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
                 }
             }
+            
         }
         stage('Deliver') {
             steps {
