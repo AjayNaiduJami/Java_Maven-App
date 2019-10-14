@@ -1,4 +1,4 @@
-#simple-Java_Maven-App
+# Simple-Java_Maven-App
 
 This repository is for the
 [Build a Java app with Maven](https://jenkins.io/doc/tutorials/build-a-java-app-with-maven/)
